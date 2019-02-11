@@ -76,7 +76,7 @@ router.post("/update", async (req, res) => {
 });
 
 // Param query: id
-router.get("/delete", async (req, res) => {
+router.post("/delete", async (req, res) => {
   try {
     const id = req.query.id;
     const todo = await Todo.findById(id);
