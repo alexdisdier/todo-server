@@ -11,15 +11,18 @@ const Todo = require("../models/todo");
 router.post("/create", async (req, res) => {
   try {
     const title = req.body.title;
+    const pos = req.body.pos;
+
     const success = {
       message: "Successfully created"
     };
     const failure = {
       message: "Not created"
     };
-    if (title !== null) {
+    if (title !== null && pos) {
       const todo = new Todo({
-        title: title
+        title: title,
+        pos: pos
       });
       await todo.save();
       return res.json(success);
@@ -52,14 +55,33 @@ router.get("/read", async (req, res) => {
 });
 
 // Param query: id
+// Params body: title, isDone, pos
 router.post("/update", async (req, res) => {
   try {
     const id = req.query.id;
+    const title = req.body.title;
+    const pos = req.body.pos;
+
     const todo = await Todo.findById(id);
+    const isDone = todo.isDone;
+
     if (id !== undefined && id !== "" && todo) {
-      const isDone = todo.isDone;
-      todo.isDone = !isDone;
-      await todo.save();
+      // Update isDone only when crossed out
+      if (title === undefined) {
+        todo.isDone = !isDone;
+        await todo.save();
+      }
+      // else if ()
+      // Update Position when drag and drop only
+      // else if (title === "") {
+      //   todo.title = title;
+      //   todo.pos = pos;
+      // }
+
+      // Update title only
+      // else if (title !== "") {
+      // }
+
       res.json({
         message: "task updated"
       });

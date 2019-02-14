@@ -19,6 +19,10 @@ const Todo = mongoose.model("Todo", {
   isDone: {
     type: Boolean,
     default: false
+  },
+  pos: {
+    type: Number,
+    default: null
   }
 });
 
